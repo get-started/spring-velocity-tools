@@ -1,0 +1,33 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.5
+version = '1.0'
+configurations {
+    providedCompile.visible = false
+    compile.extendsFrom providedCompile
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.apache.velocity:velocity-tools:2.0'
+    providedCompile 'org.springframework:spring-webmvc:3.2.0.RELEASE'
+    providedCompile 'javax.servlet:servlet-api:2.5'
+
+    testCompile 'junit:junit:4.11'
+}
+sourceSets.each {
+    tasks.getByPath(it.processResourcesTaskName).destinationDir = it.output.classesDir
+}
+
+idea {
+    module {
+        inheritOutputDirs = false
+        downloadJavadoc = false
+        downloadSources = false
+        excludeDirs += [file('.idea'), file('.gradle'), file('gradle')]
+    }
+}

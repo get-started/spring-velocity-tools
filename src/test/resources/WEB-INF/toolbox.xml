@@ -1,0 +1,18 @@
+<tools>
+    <toolbox scope="request">
+        <tool key="requestScope" class="scope.Request"/>
+        <tool key="foo" class="scope.Request"/>
+        <tool key="bar" class="scope.Request"/>
+    </toolbox>
+    <toolbox scope="session">
+        <tool key="sessionScope" class="scope.Session"/>
+        <tool key="foo" class="scope.Session"/>
+        <tool key="other" class="scope.Session"/>
+    </toolbox>
+    <toolbox scope="application">
+        <tool key="applicationScope" class="scope.Application"/>
+        <tool key="foo" class="scope.Application"/>
+        <tool key="bar" class="scope.Application"/>
+        <tool key="other" class="scope.Application"/>
+    </toolbox>
+</tools>
