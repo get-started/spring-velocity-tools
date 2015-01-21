@@ -1,11 +1,11 @@
 package org.spring.velocity.view;
 
-import org.apache.struts.mock.MockHttpServletRequest;
-import org.apache.struts.mock.MockServletContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockServletContext;
 import scope.Application;
 import scope.Request;
 import scope.Session;

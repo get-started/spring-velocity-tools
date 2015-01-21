@@ -19,7 +19,7 @@ import java.util.Map;
 public class VelocityToolbox2View extends VelocityToolboxView {
     @Override
     protected Context createVelocityContext(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ViewToolContext toolContext = new ViewToolContext(getVelocityEngine(), request, response, getServletContext());
+        ToolContext toolContext = new ViewPathContext(getServletContext());
         toolContext.putAll(model);
         exposingTools(toolContext, request, response);
         return toolContext;
@@ -27,6 +27,7 @@ public class VelocityToolbox2View extends VelocityToolboxView {
 
     /**
      * Exposing tools into ToolContext.
+     *
      * @param toolContext
      * @param request
      * @param response
