@@ -9,7 +9,8 @@ import javax.servlet.ServletContext;
  */
 public class ViewPathContext extends ToolContext {
 
-    public static final String PATH_PREFIX = "path_";
+    public static final String ROOT_PATH_NAME = "path";
+    public static final String PATH_PREFIX = ROOT_PATH_NAME + "_";
     private String contextPath;
 
     public ViewPathContext(ServletContext servletContext) {
@@ -19,7 +20,7 @@ public class ViewPathContext extends ToolContext {
     @Override
     public Object get(String key) {
         Object value = super.get(key);
-        if (value == null && key.startsWith(PATH_PREFIX)) {
+        if (value == null && isPathVariable(key)) {
             String path = uri(key);
             put(key, path);
             return path;
@@ -27,7 +28,14 @@ public class ViewPathContext extends ToolContext {
         return value;
     }
 
-    private String uri(String uri) {
-        return contextPath + uri.substring(4).replace('_', '/');
+    private boolean isPathVariable(String key) {
+        return ROOT_PATH_NAME.equals(key) || key.startsWith(PATH_PREFIX);
+    }
+
+    private String uri(String key) {
+        if (ROOT_PATH_NAME.equals(key)) {
+            return contextPath;
+        }
+        return contextPath + key.substring(ROOT_PATH_NAME.length()).replace('_', '/');
     }
 }
