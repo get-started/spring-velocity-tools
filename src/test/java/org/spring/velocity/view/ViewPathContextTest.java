@@ -32,7 +32,12 @@ public class ViewPathContextTest {
     }
 
     @Test
-    public void path() throws Exception {
+    public void exposeContextPath() throws Exception {
+        assertVariable("path", equalTo("/public"));
+    }
+
+    @Test
+    public void exposePathRelativeToContext() throws Exception {
         assertVariable("path_assets_css", equalTo("/public/assets/css"));
         assertVariable("path_js", equalTo("/public/js"));
     }
