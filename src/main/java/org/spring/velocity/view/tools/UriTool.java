@@ -2,7 +2,7 @@ package org.spring.velocity.view.tools;
 
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
-import org.apache.velocity.tools.config.InvalidScope;
+import org.apache.velocity.tools.config.ValidScope;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
  * Created by L.x on 15-1-26.
  */
 @DefaultKey("uri")
-@InvalidScope(Scope.REQUEST)
+@ValidScope(Scope.REQUEST)
 public class UriTool {
     private HttpServletRequest request;
 
