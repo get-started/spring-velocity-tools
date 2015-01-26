@@ -3,25 +3,37 @@ package org.spring.velocity.view;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.*;
 import org.apache.velocity.tools.view.ServletUtils;
+import org.apache.velocity.tools.view.ViewContext;
 import org.springframework.web.servlet.view.velocity.VelocityToolboxView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by L.x on 15-1-19.
  */
 public class VelocityToolbox2View extends VelocityToolboxView {
+    private ToolManager toolManager;
+
     @Override
-    protected Context createVelocityContext(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ToolContext context = createToolManager(request, response).createContext(model);
+    protected Context createVelocityContext(final Map<String, Object> model, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        ToolContext context = getToolManager().createContext(createToolsProps(model, request, response));
         context.putAll(model);
         return context;
     }
 
-    protected ToolManager createToolManager(HttpServletRequest request, HttpServletResponse response) {
-        ToolManager toolManager = new PathViewToolManager(request, response);
+    private HashMap<String, Object> createToolsProps(final Map<String, Object> model, final HttpServletRequest request, final HttpServletResponse response) {
+        return new HashMap<String, Object>() {{
+            putAll(model);
+            put(ViewContext.REQUEST, request);
+            put(ViewContext.RESPONSE, response);
+        }};
+    }
+
+    protected ToolManager createToolManager() {
+        ToolManager toolManager = new PathViewToolManager();
         toolManager.setVelocityEngine(getVelocityEngine());
         if (getToolboxConfigLocation() != null) {
             toolManager.configure(ServletUtils.getConfiguration(getToolboxConfigLocation(), getServletContext()));
@@ -29,18 +41,31 @@ public class VelocityToolbox2View extends VelocityToolboxView {
         return toolManager;
     }
 
-    private class PathViewToolManager extends ToolManager {
-        private HttpServletRequest request;
-        private HttpServletResponse response;
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        super.afterPropertiesSet();
+        setToolManager(createToolManager());
+    }
 
-        public PathViewToolManager(HttpServletRequest request, HttpServletResponse response) {
+    public ToolManager getToolManager() {
+        return toolManager;
+    }
+
+    private void setToolManager(ToolManager toolManager) {
+        this.toolManager = toolManager;
+    }
+
+    private class PathViewToolManager extends ToolManager {
+
+        public PathViewToolManager() {
             super(false);
-            this.request = request;
-            this.response = response;
         }
 
         @Override
         public ToolContext createContext(Map<String, Object> toolProps) {
+            HttpServletRequest request = (HttpServletRequest) toolProps.get(ViewContext.REQUEST);
+            HttpServletResponse response = (HttpServletResponse) toolProps.get(ViewContext.RESPONSE);
+
             ToolContext toolContext = new PathViewToolContext(getVelocityEngine(), request, response, getServletContext());
             prepareContext(toolContext);
             return toolContext;

@@ -14,8 +14,7 @@ import scope.Session;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.isA;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 public class VelocityToolbox2ViewTest {
@@ -27,6 +26,7 @@ public class VelocityToolbox2ViewTest {
     @Before
     public void setUp() throws Exception {
         toolboxView = new VelocityToolbox2View();
+        toolboxView.setUrl("base");
         toolboxView.setServletContext(new MockServletContext());
         toolboxView.setVelocityEngine(new VelocityEngine());
         request = new MockHttpServletRequest();
@@ -34,16 +34,26 @@ public class VelocityToolbox2ViewTest {
     }
 
     private Context createViewContext() throws Exception {
+        toolboxView.afterPropertiesSet();
         return toolboxView.createVelocityContext(model, request, new MockHttpServletResponse());
     }
 
-    private void usingToolbox(String toolboxConfigLocation) {
+    private void usingToolbox(String toolboxConfigLocation) throws Exception {
         toolboxView.setToolboxConfigLocation(toolboxConfigLocation);
     }
 
     private VelocityToolbox2ViewTest withAttribute(String name, String value) {
         model.put(name, value);
         return this;
+    }
+
+    @Test
+    public void createToolManagerAfterInitialized() throws Exception {
+        assertThat(toolboxView.getToolManager(), nullValue());
+
+        toolboxView.afterPropertiesSet();
+
+        assertThat(toolboxView.getToolManager(), notNullValue());
     }
 
     @Test
