@@ -1,21 +1,26 @@
 package org.spring.velocity.view;
 
-import org.apache.velocity.tools.ToolContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.tools.view.ViewToolContext;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by L.x on 15-1-21.
  */
-public class ViewPathContext extends ToolContext {
+public class PathViewToolContext extends ViewToolContext {
 
     public static final String ROOT_PATH_NAME = "path";
     public static final String PATH_PREFIX = ROOT_PATH_NAME + "_";
     private String contextPath;
 
-    public ViewPathContext(ServletContext servletContext) {
-        contextPath = servletContext.getContextPath();
+    public PathViewToolContext(VelocityEngine velocity, HttpServletRequest request, HttpServletResponse response, ServletContext application) {
+        super(velocity, request, response, application);
+        contextPath = application.getContextPath();
     }
+
 
     @Override
     public Object get(String key) {

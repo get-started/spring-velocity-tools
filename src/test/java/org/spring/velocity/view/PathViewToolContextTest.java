@@ -1,8 +1,11 @@
 package org.spring.velocity.view;
 
+import org.apache.velocity.app.VelocityEngine;
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletContext;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -12,13 +15,13 @@ import static org.junit.Assert.assertThat;
 /**
  * Created by L.x on 15-1-21.
  */
-public class ViewPathContextTest {
+public class PathViewToolContextTest {
 
-    private ViewPathContext context;
+    private PathViewToolContext context;
 
     @Before
     public void setUp() throws Exception {
-        context = new ViewPathContext(new MockServletContext() {{
+        context = new PathViewToolContext(new VelocityEngine(), new MockHttpServletRequest(), new MockHttpServletResponse(), new MockServletContext() {{
             setContextPath("/public");
         }});
     }

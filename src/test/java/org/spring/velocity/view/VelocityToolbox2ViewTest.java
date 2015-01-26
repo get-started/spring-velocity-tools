@@ -5,6 +5,7 @@ import org.apache.velocity.context.Context;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletContext;
 import scope.Application;
 import scope.Request;
@@ -33,7 +34,7 @@ public class VelocityToolbox2ViewTest {
     }
 
     private Context createViewContext() throws Exception {
-        return toolboxView.createVelocityContext(model, request, null);
+        return toolboxView.createVelocityContext(model, request, new MockHttpServletResponse());
     }
 
     private void usingToolbox(String toolboxConfigLocation) {
@@ -43,6 +44,11 @@ public class VelocityToolbox2ViewTest {
     private VelocityToolbox2ViewTest withAttribute(String name, String value) {
         model.put(name, value);
         return this;
+    }
+
+    @Test
+    public void velocityContextType() throws Exception {
+        assertThat(createViewContext(), isA((Class) PathViewToolContext.class));
     }
 
     @Test

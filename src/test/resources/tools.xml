@@ -1,0 +1,5 @@
+<tools>
+    <toolbox scope="request">
+        <tool key="requestTool" class="apis.ViewToolContextTest$RequestTool"/>
+    </toolbox>
+</tools>
