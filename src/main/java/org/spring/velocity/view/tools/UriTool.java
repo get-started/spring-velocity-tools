@@ -19,7 +19,7 @@ public class UriTool {
     }
 
     private String baseUrl() {
-        return request.getScheme() + "://" + request.getServerName() + request.getContextPath() + serverPort();
+        return request.getScheme() + "://" + request.getServerName() + serverPort() + request.getContextPath();
     }
 
     private String uri(String path) {

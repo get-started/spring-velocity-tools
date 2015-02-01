@@ -51,6 +51,15 @@ public class UriToolTest {
         assertThat(uriTool.of("edit"), equalTo("http://localhost/weixin/edit"));
     }
 
+
+    @Test
+    public void fixBug_buildUrlError() throws Exception {
+        request.setContextPath("/weixin");
+        request.setServerPort(8083);
+
+        assertThat(uriTool.of("edit"), equalTo("http://localhost:8083/weixin/edit"));
+    }
+
     @Test
     public void hide80PortForHttpProtocol() throws Exception {
         assertThat(uriTool.of("/"), equalTo("http://localhost/"));
